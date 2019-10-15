@@ -10,22 +10,32 @@ SciViews::R
 ```{r}
 library(readxl)
 bourdon <- read_excel("../data/bourdon.xlsx")
-View(bourdon)
+#View(bourdon)
+
+```
+```{r}
+library(readxl)
+bourdon1 <- read_excel("../data/bourdon1.xlsx")
+View(bourdon1)
 ```
 
 ```{r}
 
-Tableaux_larves <- read("data/Tableaux larves.xlsx")
+Tableaux_larves <- read("../data/Tableaux larves.xlsx")
 View(Tableaux_larves)
 ```
 ```{r}
-bourdon$longueur <- as.numeric(bourdon$longueur)
-
+bourdon %>.%
+  mutate(., Masse = Masse/1000) -> bourdon
+bourdon1 %>.%
+  mutate(., Masse = Masse/1000) -> bourdon1
 
 ```
 ```{r}
 chart(data = bourdon, Masse ~ radiale) +
-  geom_point()
+  geom_point(na.rm =TRUE)+
+  ggtitle("cellule radiale en fonction de la masse") +
+  xlab("Masse du bourdon(g)") + ylab("longueur cellule radiale")
 ```
 ```{r}
 cor.test(data = bourdon, ~ Masse + radiale,
@@ -36,6 +46,21 @@ library(corrplot)
 corrplot::corrplot(cor(bourdon[, 1:3],
   use = "pairwise.complete.obs"), method = "ellipse")
 ```
+```{r}
+summary(lm. <- lm(data = bourdon, radiale ~ Masse))
+lm. %>.% (function (lm, model = lm[["model"]], vars = names(model))
+  chart(model, aes_string(x = vars[2], y = vars[1])) +
+  geom_point() +
+  stat_smooth(method = "lm", formula = y ~ x))(.)
+```
+```{r}
+summary(lm. <- lm(data = bourdon1, radiale ~ Masse))
+lm. %>.% (function (lm, model = lm[["model"]], vars = names(model))
+  chart(model, aes_string(x = vars[2], y = vars[1])) +
+  geom_point() +
+  stat_smooth(method = "lm", formula = y ~ x))(.)
+```
+
 
 
 
