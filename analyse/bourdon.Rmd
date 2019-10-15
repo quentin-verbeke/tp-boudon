@@ -1,0 +1,43 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+SciViews::R
+```
+
+```{r}
+library(readxl)
+bourdon <- read_excel("../data/bourdon.xlsx")
+View(bourdon)
+```
+
+```{r}
+
+Tableaux_larves <- read("data/Tableaux larves.xlsx")
+View(Tableaux_larves)
+```
+```{r}
+bourdon$longueur <- as.numeric(bourdon$longueur)
+
+
+```
+```{r}
+chart(data = bourdon, Masse ~ radiale) +
+  geom_point()
+```
+```{r}
+cor.test(data = bourdon, ~ Masse + radiale,
+  alternative = "two.sided", method = "pearson")
+```
+```{r}
+library(corrplot)
+corrplot::corrplot(cor(bourdon[, 1:3],
+  use = "pairwise.complete.obs"), method = "ellipse")
+```
+
+
+
+
+
